@@ -77,9 +77,49 @@ paths:
           content:
             application/json:
                 schema:
-                    $ref: '#/components/schemas/Article' 
-    
-
+                    $ref: '#/components/schemas/Article'
+    put:
+        requestBody:
+            content:
+              application/json:
+                schema:
+                    $ref: '#/components/schemas/SimpleArticle'
+        tags:
+            - Shop
+        summary: Ändere einen Artikel
+        description: Dieser Endpunkt ändert einen Artikel
+        responses:
+            '200':
+                description: Changed
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/Article'
+    patch:
+        requestBody:
+            content:
+              application/json:
+                schema:
+                    $ref: '#/components/schemas/PatchArticle'
+        tags:
+            - Shop
+        summary: Ändere das Feld eines Artikels
+        description: Dieser Endpunkt ändert ein oder mehrere Felder eines Artikels
+        responses:
+            '200':
+                description: Changed
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/Article'
+    delete:
+      tags:
+        - Shop
+      summary: Lösche einen Artikel zurück
+      description: Dieser Endpunkt löscht einen Artikel
+      responses:
+        '200':
+          description: deleted          
 
 components:
   requestBodies:  
@@ -89,6 +129,22 @@ components:
             schema: 
                 $ref: '#/components/schemas/SimpleArticle'
   schemas:
+    PatchArticle:
+        type: object
+        minProperties: 1
+        properties:
+          name:
+            type: string
+            maxLength: 50
+            example: Stellschrauben
+            description: Artikelname
+          
+          preis:
+            type: number
+            format: float
+            minimum: 0
+            example: 0.99
+            description: Preis des Artikels
     SimpleArticle:
         type: object
         properties:
@@ -103,7 +159,7 @@ components:
             format: float
             minimum: 0
             example: 0.99
-            description: Presi des Artikels                         
+            description: Preis des Artikels                         
         required:
           - name
           - preis
@@ -126,7 +182,7 @@ components:
             format: float
             minimum: 0
             example: 0.99
-            description: Presi des Artikels
+            description: Preis des Artikels
         required:
           - id
           - name
