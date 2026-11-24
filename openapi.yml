@@ -2,9 +2,15 @@ openapi: '3.0.3'
 info:
   title: Katalog API
   description: Dies ist eine API mit der wir Artikel administrieren.
-  version: '1.0'
+  version: '1.0.0'
+  x-api-id: 3f8b2c1e-7a4d-4e9b-9c2a-5d6e7f8a9b0c
+  x-audience: company-internal
+  contact:
+    name: "KatalogAPI"
+    url: "https://www.predic8.de"
+    email: "info@predic8.de"
 servers:
-  - url: http://localhost:50001/
+  - url: http://localhost:50001
 tags:
     - name: Shop
     - name: General
@@ -13,6 +19,7 @@ paths:
     get:
       tags:
         - Shop
+      operationId: getArticles
       summary: Gebe alle Artikel zurück
       description: Dieser Endpunkt liefert alle Artikel zurück
       responses:
@@ -21,15 +28,13 @@ paths:
           content:
             application/json:
                 schema:
-                    type: array
-                    items:
-                        $ref: '#/components/schemas/Article'    
+                    $ref: '#/components/schemas/ArticleList'
+        default:
+          $ref: '#/components/responses/Problem'
     post:
+        operationId: createArticle
         requestBody:
-            content:
-              application/json:
-                schema:
-                    $ref: '#/components/schemas/SimpleArticle'
+            $ref: '#/components/requestBodies/ArticleRequest'
         tags:
           - Shop
         summary: Erstelle einen Artikel
@@ -58,6 +63,8 @@ paths:
               application/json:
                 schema:
                     $ref: '#/components/schemas/Article'
+          default:
+            $ref: '#/components/responses/Problem'
   /articles/{aid}:
     parameters:
       - in: path
@@ -69,6 +76,7 @@ paths:
     get:
       tags:
         - Shop
+      operationId: getArticle
       summary: Gebe einen Artikel zurück
       description: Dieser Endpunkt liefert einen spezifischen Artikel zurück
       responses:
@@ -78,12 +86,12 @@ paths:
             application/json:
                 schema:
                     $ref: '#/components/schemas/Article'
+        default:
+          $ref: '#/components/responses/Problem'
     put:
+        operationId: updateArticle
         requestBody:
-            content:
-              application/json:
-                schema:
-                    $ref: '#/components/schemas/SimpleArticle'
+            $ref: '#/components/requestBodies/ArticleRequest'
         tags:
             - Shop
         summary: Ändere einen Artikel
@@ -95,7 +103,10 @@ paths:
                     application/json:
                         schema:
                             $ref: '#/components/schemas/Article'
+            default:
+                $ref: '#/components/responses/Problem'
     patch:
+        operationId: patchArticle
         requestBody:
             content:
               application/json:
@@ -112,23 +123,72 @@ paths:
                     application/json:
                         schema:
                             $ref: '#/components/schemas/Article'
+            default:
+                $ref: '#/components/responses/Problem'
     delete:
       tags:
         - Shop
-      summary: Lösche einen Artikel zurück
+      operationId: deleteArticle
+      summary: Lösche einen Artikel
       description: Dieser Endpunkt löscht einen Artikel
       responses:
         '200':
-          description: deleted          
+          description: deleted
+        default:
+          $ref: '#/components/responses/Problem'
 
 components:
-  requestBodies:  
+  responses:
+    Problem:
+      description: Fehler (RFC 9457 Problem Details)
+      content:
+        application/problem+json:
+          schema:
+            $ref: '#/components/schemas/Problem'
+  requestBodies:
     ArticleRequest:
+        required: true
         content:
           application/json:
             schema: 
                 $ref: '#/components/schemas/SimpleArticle'
   schemas:
+    Problem:
+        type: object
+        properties:
+          type:
+            type: string
+            format: uri
+            maxLength: 400
+            example: https://example.com/problems/not-found
+          title:
+            type: string
+            maxLength: 200
+            example: Not Found
+          status:
+            type: integer
+            format: int32
+            minimum: 100
+            maximum: 599
+            example: 404
+          detail:
+            type: string
+            maxLength: 1000
+            example: Artikel mit der Id 42 existiert nicht.
+          instance:
+            type: string
+            format: uri-reference
+            maxLength: 400
+    ArticleList:
+        type: object
+        properties:
+          articles:
+            type: array
+            maxItems: 1000
+            items:
+              $ref: '#/components/schemas/Article'
+        required:
+          - articles
     PatchArticle:
         type: object
         minProperties: 1
