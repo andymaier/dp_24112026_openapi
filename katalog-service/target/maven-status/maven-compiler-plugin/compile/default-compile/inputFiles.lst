@@ -1,0 +1,12 @@
+/home/andreas/development/dataport_RESTAPI_advanced_24112026/openapi/katalog-service/src/main/java/org/openapitools/OpenApiGeneratorApplication.java
+/home/andreas/development/dataport_RESTAPI_advanced_24112026/openapi/katalog-service/src/main/java/org/openapitools/RFC3339DateFormat.java
+/home/andreas/development/dataport_RESTAPI_advanced_24112026/openapi/katalog-service/src/main/java/org/openapitools/api/ApiUtil.java
+/home/andreas/development/dataport_RESTAPI_advanced_24112026/openapi/katalog-service/src/main/java/org/openapitools/api/ArticlesApi.java
+/home/andreas/development/dataport_RESTAPI_advanced_24112026/openapi/katalog-service/src/main/java/org/openapitools/api/ArticlesApiController.java
+/home/andreas/development/dataport_RESTAPI_advanced_24112026/openapi/katalog-service/src/main/java/org/openapitools/configuration/HomeController.java
+/home/andreas/development/dataport_RESTAPI_advanced_24112026/openapi/katalog-service/src/main/java/org/openapitools/configuration/SpringDocConfiguration.java
+/home/andreas/development/dataport_RESTAPI_advanced_24112026/openapi/katalog-service/src/main/java/org/openapitools/model/Article.java
+/home/andreas/development/dataport_RESTAPI_advanced_24112026/openapi/katalog-service/src/main/java/org/openapitools/model/ArticleList.java
+/home/andreas/development/dataport_RESTAPI_advanced_24112026/openapi/katalog-service/src/main/java/org/openapitools/model/PatchArticle.java
+/home/andreas/development/dataport_RESTAPI_advanced_24112026/openapi/katalog-service/src/main/java/org/openapitools/model/Problem.java
+/home/andreas/development/dataport_RESTAPI_advanced_24112026/openapi/katalog-service/src/main/java/org/openapitools/model/SimpleArticle.java

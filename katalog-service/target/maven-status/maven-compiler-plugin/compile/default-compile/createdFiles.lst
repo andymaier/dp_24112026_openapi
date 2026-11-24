@@ -1,0 +1,12 @@
+org/openapitools/model/PatchArticle.class
+org/openapitools/model/SimpleArticle.class
+org/openapitools/api/ApiUtil.class
+org/openapitools/configuration/HomeController.class
+org/openapitools/model/ArticleList.class
+org/openapitools/model/Article.class
+org/openapitools/RFC3339DateFormat.class
+org/openapitools/api/ArticlesApi.class
+org/openapitools/OpenApiGeneratorApplication.class
+org/openapitools/configuration/SpringDocConfiguration.class
+org/openapitools/model/Problem.class
+org/openapitools/api/ArticlesApiController.class

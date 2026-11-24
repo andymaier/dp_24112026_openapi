@@ -1,0 +1,358 @@
+openapi: 3.0.3
+info:
+  contact:
+    email: info@predic8.de
+    name: KatalogAPI
+    url: https://www.predic8.de
+  description: Dies ist eine API mit der wir Artikel administrieren.
+  title: Katalog API
+  version: 1.0.0
+  x-api-id: 3f8b2c1e-7a4d-4e9b-9c2a-5d6e7f8a9b0c
+  x-audience: company-internal
+servers:
+- url: http://localhost:50001
+- url: http://localhost:50002
+tags:
+- name: Shop
+- name: General
+paths:
+  /articles:
+    get:
+      description: Dieser Endpunkt liefert alle Artikel zurück
+      operationId: getArticles
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ArticleList"
+          description: OK
+        default:
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/Problem"
+          description: Fehler (RFC 9457 Problem Details)
+      summary: Gebe alle Artikel zurück
+      tags:
+      - Shop
+      x-accepts:
+      - application/json
+      - application/problem+json
+      x-tags:
+      - tag: Shop
+    post:
+      description: |
+        Hier wird ein **Artikel** erstellt.
+        Ein Artikel besteht aus:
+
+            - name
+            - preis
+
+        Id wird nach Vergabe ebenfalls geliefert.
+
+        ![alt text](https://substackcdn.com/image/fetch/$s_!3XMN!,f_auto,q_auto:good,fl_progressive:steep/https://substack-post-media.s3.amazonaws.com/public/images/de4970c5-e2d0-404f-b01d-127f68b9dfcf_2816x1536.jpeg "Logo Title Text 1")
+      operationId: createArticle
+      requestBody:
+        $ref: "#/components/requestBodies/ArticleRequest"
+      responses:
+        "201":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Article"
+          description: Created
+          headers:
+            Location:
+              description: URI des neuen Artikels
+              explode: false
+              schema:
+                format: uri
+                maxLength: 400
+                type: string
+              style: simple
+        default:
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/Problem"
+          description: Fehler (RFC 9457 Problem Details)
+      summary: Erstelle einen Artikel
+      tags:
+      - Shop
+      x-content-type: application/json
+      x-accepts:
+      - application/json
+      - application/problem+json
+      x-tags:
+      - tag: Shop
+  /articles/{aid}:
+    delete:
+      description: Dieser Endpunkt löscht einen Artikel
+      operationId: deleteArticle
+      parameters:
+      - explode: false
+        in: path
+        name: aid
+        required: true
+        schema:
+          maxLength: 36
+          type: string
+        style: simple
+      responses:
+        "200":
+          description: deleted
+        default:
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/Problem"
+          description: Fehler (RFC 9457 Problem Details)
+      summary: Lösche einen Artikel
+      tags:
+      - Shop
+      x-accepts:
+      - application/problem+json
+      x-tags:
+      - tag: Shop
+    get:
+      description: Dieser Endpunkt liefert einen spezifischen Artikel zurück
+      operationId: getArticle
+      parameters:
+      - explode: false
+        in: path
+        name: aid
+        required: true
+        schema:
+          maxLength: 36
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Article"
+          description: OK
+        default:
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/Problem"
+          description: Fehler (RFC 9457 Problem Details)
+      summary: Gebe einen Artikel zurück
+      tags:
+      - Shop
+      x-accepts:
+      - application/json
+      - application/problem+json
+      x-tags:
+      - tag: Shop
+    patch:
+      description: Dieser Endpunkt ändert ein oder mehrere Felder eines Artikels
+      operationId: patchArticle
+      parameters:
+      - explode: false
+        in: path
+        name: aid
+        required: true
+        schema:
+          maxLength: 36
+          type: string
+        style: simple
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/PatchArticle"
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Article"
+          description: Changed
+        default:
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/Problem"
+          description: Fehler (RFC 9457 Problem Details)
+      summary: Ändere das Feld eines Artikels
+      tags:
+      - Shop
+      x-content-type: application/json
+      x-accepts:
+      - application/json
+      - application/problem+json
+      x-tags:
+      - tag: Shop
+    put:
+      description: Dieser Endpunkt ändert einen Artikel
+      operationId: updateArticle
+      parameters:
+      - explode: false
+        in: path
+        name: aid
+        required: true
+        schema:
+          maxLength: 36
+          type: string
+        style: simple
+      requestBody:
+        $ref: "#/components/requestBodies/ArticleRequest"
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Article"
+          description: Changed
+        default:
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/Problem"
+          description: Fehler (RFC 9457 Problem Details)
+      summary: Ändere einen Artikel
+      tags:
+      - Shop
+      x-content-type: application/json
+      x-accepts:
+      - application/json
+      - application/problem+json
+      x-tags:
+      - tag: Shop
+components:
+  requestBodies:
+    ArticleRequest:
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/SimpleArticle"
+      required: true
+  responses:
+    Problem:
+      content:
+        application/problem+json:
+          schema:
+            $ref: "#/components/schemas/Problem"
+      description: Fehler (RFC 9457 Problem Details)
+  schemas:
+    Problem:
+      properties:
+        type:
+          example: https://example.com/problems/not-found
+          format: uri
+          maxLength: 400
+          type: string
+        title:
+          example: Not Found
+          maxLength: 200
+          type: string
+        status:
+          example: 404
+          format: int32
+          maximum: 599
+          minimum: 100
+          type: integer
+        detail:
+          example: Artikel mit der Id 42 existiert nicht.
+          maxLength: 1000
+          type: string
+        instance:
+          format: uri-reference
+          maxLength: 400
+          type: string
+      type: object
+    ArticleList:
+      example:
+        articles:
+        - id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+          name: Stellschrauben
+          preis: 0.99
+        - id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+          name: Stellschrauben
+          preis: 0.99
+        - id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+          name: Stellschrauben
+          preis: 0.99
+        - id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+          name: Stellschrauben
+          preis: 0.99
+        - id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+          name: Stellschrauben
+          preis: 0.99
+      properties:
+        articles:
+          items:
+            $ref: "#/components/schemas/Article"
+          maxItems: 1000
+          type: array
+      required:
+      - articles
+      type: object
+    PatchArticle:
+      example:
+        name: Stellschrauben
+        preis: 0.99
+      minProperties: 1
+      properties:
+        name:
+          description: Artikelname
+          example: Stellschrauben
+          maxLength: 50
+          type: string
+        preis:
+          description: Preis des Artikels
+          example: 0.99
+          format: float
+          minimum: 0
+          type: number
+      type: object
+    SimpleArticle:
+      example:
+        name: Stellschrauben
+        preis: 0.99
+      properties:
+        name:
+          description: Artikelname
+          example: Stellschrauben
+          maxLength: 50
+          type: string
+        preis:
+          description: Preis des Artikels
+          example: 0.99
+          format: float
+          minimum: 0
+          type: number
+      required:
+      - name
+      - preis
+      type: object
+    Article:
+      example:
+        id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+        name: Stellschrauben
+        preis: 0.99
+      properties:
+        id:
+          format: uuid
+          maxLength: 36
+          type: string
+        name:
+          description: Artikelname
+          example: Stellschrauben
+          maxLength: 50
+          type: string
+        preis:
+          description: Preis des Artikels
+          example: 0.99
+          format: float
+          minimum: 0
+          type: number
+      required:
+      - id
+      - name
+      - preis
+      type: object
