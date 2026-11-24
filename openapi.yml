@@ -24,9 +24,68 @@ paths:
                     type: array
                     items:
                         $ref: '#/components/schemas/Article'    
+    post:
+        requestBody:
+            content:
+              application/json:
+                schema:
+                    $ref: '#/components/schemas/SimpleArticle'
+        tags:
+          - Shop
+        summary: Erstelle einen Artikel
+        description: | 
+            Hier wird ein **Artikel** erstellt.
+            Ein Artikel besteht aus:
+
+                - name
+                - preis
+            
+            Id wird nach Vergabe ebenfalls geliefert.
+
+            ![alt text](https://substackcdn.com/image/fetch/$s_!3XMN!,f_auto,q_auto:good,fl_progressive:steep/https://substack-post-media.s3.amazonaws.com/public/images/de4970c5-e2d0-404f-b01d-127f68b9dfcf_2816x1536.jpeg "Logo Title Text 1")
+
+        responses:
+          '201':
+            description: Created
+            headers:
+              Location:
+                description: URI des neuen Artikels
+                schema:
+                    type: string
+                    maxLength: 400
+                    format: uri
+            content:
+              application/json:
+                schema:
+                    $ref: '#/components/schemas/Article'
+
 
 components:
+  requestBodies:  
+    ArticleRequest:
+        content:
+          application/json:
+            schema: 
+                $ref: '#/components/schemas/SimpleArticle'
   schemas:
+    SimpleArticle:
+        type: object
+        properties:
+          name:
+            type: string
+            maxLength: 50
+            example: Stellschrauben
+            description: Artikelname
+          
+          preis:
+            type: number
+            format: float
+            minimum: 0
+            example: 0.99
+            description: Presi des Artikels
+        required:
+          - name
+          - preis
     Article:
         type: object
         properties:
