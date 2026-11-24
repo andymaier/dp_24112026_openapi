@@ -58,6 +58,27 @@ paths:
               application/json:
                 schema:
                     $ref: '#/components/schemas/Article'
+  /articles/{aid}:
+    parameters:
+      - in: path
+        name: aid
+        schema:
+            type: string
+            maxLength: 36
+        required: true
+    get:
+      tags:
+        - Shop
+      summary: Gebe einen Artikel zurück
+      description: Dieser Endpunkt liefert einen spezifischen Artikel zurück
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+                schema:
+                    $ref: '#/components/schemas/Article' 
+    
 
 
 components:
@@ -82,7 +103,7 @@ components:
             format: float
             minimum: 0
             example: 0.99
-            description: Presi des Artikels
+            description: Presi des Artikels                         
         required:
           - name
           - preis
