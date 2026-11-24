@@ -1,0 +1,53 @@
+openapi: '3.0.3'
+info:
+  title: Katalog API
+  description: Dies ist eine API mit der wir Artikel administrieren.
+  version: '1.0'
+servers:
+  - url: http://localhost:50001/
+tags:
+    - name: Shop
+    - name: General
+paths:
+  /articles:
+    get:
+      tags:
+        - Shop
+      summary: Gebe alle Artikel zurück
+      description: Dieser Endpunkt liefert alle Artikel zurück
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+                schema:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/Article'    
+
+components:
+  schemas:
+    Article:
+        type: object
+        properties:
+          id:
+            type: string
+            format: uuid
+            maxLength: 36
+
+          name:
+            type: string
+            maxLength: 50
+            example: Stellschrauben
+            description: Artikelname
+          
+          preis:
+            type: number
+            format: float
+            minimum: 0
+            example: 0.99
+            description: Presi des Artikels
+        required:
+          - id
+          - name
+          - preis
